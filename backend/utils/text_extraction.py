@@ -1,14 +1,39 @@
 import fitz  # PyMuPDF
 import pdfplumber
-import pytesseract
-from pdf2image import convert_from_path
 import os
 
+# ======================================================
+# OPTIONAL OCR SUPPORT
+# ------------------------------------------------------
+# OCR requires:
+#   - pytesseract (Python package)
+#   - tesseract-ocr (system binary)
+#   - poppler (for pdf2image)
+#
+# These are NOT available on Railway by default.
+# So we safely detect OCR availability instead of crashing.
+# ======================================================
+
+try:
+    import pytesseract
+    from pdf2image import convert_from_path
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
+
+
+# ======================================================
 # CONFIG
+# ======================================================
+
 TEXT_LENGTH_THRESHOLD = 300
 OCR_DPI = 300
 
+
+# ======================================================
 # MAIN FUNCTION
+# ======================================================
+
 def extract_text_with_fallback(pdf_path):
     """
     Extract text from PDF using:
@@ -22,7 +47,9 @@ def extract_text_with_fallback(pdf_path):
 
     text_chunks = []
 
-    # 1. PyMuPDF extraction---
+    # --------------------------------------------------
+    # 1. PyMuPDF extraction
+    # --------------------------------------------------
     try:
         doc = fitz.open(pdf_path)
         for page in doc:
@@ -34,7 +61,9 @@ def extract_text_with_fallback(pdf_path):
 
     text_pymupdf = "\n".join(text_chunks).strip()
 
+    # --------------------------------------------------
     # 2. pdfplumber extraction
+    # --------------------------------------------------
     text_plumber = []
     try:
         with pdfplumber.open(pdf_path) as pdf:
@@ -47,14 +76,24 @@ def extract_text_with_fallback(pdf_path):
 
     text_plumber = "\n".join(text_plumber).strip()
 
+    # --------------------------------------------------
     # Combine native text
+    # --------------------------------------------------
     combined_text = "\n".join([text_pymupdf, text_plumber]).strip()
 
+    # --------------------------------------------------
     # Decide if OCR is needed
+    # --------------------------------------------------
     if len(combined_text) >= TEXT_LENGTH_THRESHOLD:
         return combined_text, "TEXT"
 
-    # 3. OCR fallback
+    # --------------------------------------------------
+    # 3. OCR fallback (ONLY if available)
+    # --------------------------------------------------
+    if not OCR_AVAILABLE:
+        print("[INFO] OCR not available. Skipping OCR fallback.")
+        return combined_text, "TEXT"
+
     print(f"[INFO] Running OCR for: {os.path.basename(pdf_path)}")
 
     ocr_text = []
@@ -69,7 +108,9 @@ def extract_text_with_fallback(pdf_path):
 
     ocr_text = "\n".join(ocr_text).strip()
 
+    # --------------------------------------------------
     # Final decision
+    # --------------------------------------------------
     if combined_text and ocr_text:
         return combined_text + "\n" + ocr_text, "MIXED"
     elif ocr_text:
@@ -78,7 +119,9 @@ def extract_text_with_fallback(pdf_path):
         return combined_text, "TEXT"
 
 
-# LAYOUT-AWARE EXTRACTION (NEW)
+# ======================================================
+# LAYOUT-AWARE EXTRACTION (NATIVE PDFs ONLY)
+# ======================================================
 
 def extract_layout_blocks_native(pdf_path):
     """
