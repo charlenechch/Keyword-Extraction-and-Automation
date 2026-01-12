@@ -1,10 +1,9 @@
 import os
 import json
 import re
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 
-client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 # ORGANISER NORMALISATION
 def normalize_organiser(name: str) -> str:
@@ -106,14 +105,15 @@ def gemini_fallback(meta, text):
     """
 
     try:
-        response = client.models.generate_content(
-            model="gemini-flash-latest",
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                temperature=0
-            )
+        model = genai.GenerativeModel(
+            "gemini-flash-latest",
+            generation_config={
+                "temperature": 0,
+                "response_mime_type": "application/json"
+            }
         )
+
+        response = model.generate_content(prompt)
 
         data = json.loads(response.text)
 
