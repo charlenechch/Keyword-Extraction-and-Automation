@@ -4,6 +4,7 @@ python-multipart
 pandas
 
 pymupdf
+pdfplumber
 pillow
 imagehash
 pytesseract
