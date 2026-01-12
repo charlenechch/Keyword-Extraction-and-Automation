@@ -8,6 +8,7 @@ pdfplumber
 pillow
 imagehash
 pytesseract
+tkinter
 
 google-generativeai
 
