@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 
-/* -------------------------
-   Upload helper
--------------------------- */
+const API_BASE = import.meta.env.VITE_API_URL;
+
+// Upload Helper
 async function uploadFile(file, setResult, setLoading) {
   setLoading(true);
 
@@ -11,7 +11,7 @@ async function uploadFile(file, setResult, setLoading) {
   formData.append("file", file);
 
   try {
-    const res = await fetch("http://localhost:8000/upload", {
+    const res = await fetch(`${API_BASE}/upload`, {
       method: "POST",
       body: formData,
     });
@@ -31,9 +31,7 @@ async function uploadFile(file, setResult, setLoading) {
   }
 }
 
-/* -------------------------
-   Review Form
--------------------------- */
+// Review Form
 function ReviewForm({ data }) {
   const [title, setTitle] = useState(data.program_title);
   const [startDate, setStartDate] = useState(data.start_date);
@@ -44,9 +42,7 @@ function ReviewForm({ data }) {
   const [costAmount, setCostAmount] = useState(data.cost_amount);
   const [costCurrency, setCostCurrency] = useState(data.cost_currency);
 
-  /* -------------------------
-     Backend helper
-  -------------------------- */
+  // Backend API Call Helper
   async function callBackend(endpoint) {
     const payload = {
       meta: {
@@ -64,16 +60,14 @@ function ReviewForm({ data }) {
       },
     };
 
-    await fetch(`http://localhost:8000${endpoint}`, {
+    await fetch(`${API_BASE}${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
   }
 
-  /* -------------------------
-     Google Form (frontend)
-  -------------------------- */
+  // Google Form 
   function handleApproveGoogle() {
     const baseUrl =
       "https://docs.google.com/forms/d/e/1FAIpQLSfqZezmVhQW8CDFAtGRPhDWIrVYTS1lBZLAW3oCQZ6_it9ehw/viewform";
@@ -94,9 +88,7 @@ function ReviewForm({ data }) {
     alert("Google Form opened with auto-filled data.");
   }
 
-  /* -------------------------
-     Backend actions
-  -------------------------- */
+  // Backend Actions
   async function handleSaveDraft() {
     await callBackend("/draft");
     alert("Draft saved to backend");
@@ -215,9 +207,7 @@ function ReviewForm({ data }) {
   );
 }
 
-/* -------------------------
-   Main App
--------------------------- */
+// Main App
 function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
