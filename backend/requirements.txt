@@ -2,12 +2,11 @@ fastapi
 uvicorn
 python-multipart
 
+pymupdf
+pillow
+imagehash
+pytesseract
+
 google-generativeai
 
-pymupdf
-pdfplumber
-pillow
-
-pandas
-numpy
 playwright
