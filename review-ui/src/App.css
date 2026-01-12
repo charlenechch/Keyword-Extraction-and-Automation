@@ -1,0 +1,135 @@
+/* ===== GLOBAL ===== */
+body {
+  background: #1e1e1e;
+  color: #eaeaea;
+  font-family: "Inter", system-ui, sans-serif;
+  justify-content: center;
+}
+
+.app {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* ===== HEADINGS ===== */
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+}
+
+/* ===== UPLOAD CARD ===== */
+.upload-card {
+  background: #252525;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+/* ===== REVIEW CARD ===== */
+.review-card {
+  background: #252525;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+/* ===== INPUTS ===== */
+label {
+  display: block;
+  margin-top: 15px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+}
+
+textarea.long-input {
+  width: 100%;
+  min-height: 40px;
+  padding: 10px;
+  margin-top: 6px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  resize: vertical; /* user can resize if needed */
+  font-family: inherit;
+}
+
+textarea.long-input:first-of-type {
+  min-height: 30px;
+}
+
+/* ===== STATUS ===== */
+.status {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.status.ready {
+  color: #4ade80;
+}
+
+.status.review {
+  color: #fbbf24;
+}
+
+/* ===== CONFIDENCE ===== */
+.confidence {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.confidence li {
+  margin-bottom: 6px;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+button.approve {
+  background: #16a34a;
+}
+
+button.draft {
+  background: #2563eb;
+}
+
+button.flag {
+  background: #dc2626;
+}
