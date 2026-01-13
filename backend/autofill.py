@@ -10,18 +10,21 @@ SLOW_MO_MS = 300  # slow down actions so you can see what's happening
 def autofill_sapsf(meta: dict):
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
-            channel="msedge",  
-            slow_mo=300
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage"
+            ] 
         )
-        context = browser.new_context()
+
+        context = browser.new_context(
+            storage_state="sap_state.json"  
+        )
+
         page = context.new_page()
 
         # A. LOGIN (HUMAN)
-        page.goto(SAP_LOGIN_URL)
-
-        # log in manually (SSO/MFA/PDPA)
-        page.pause()  
+        page.goto(SAP_LOGIN_URL, wait_until="networkidle")
 
         # B. Home → View My Learning
         page.wait_for_selector("text=View My Learning", timeout=60000)
@@ -52,27 +55,27 @@ def autofill_sapsf(meta: dict):
         frame.locator("text=Add New").wait_for(timeout=30000)
         frame.locator("text=Add New").click()
 
-        # G. AUTOFILL (EXAMPLES)
+        # G. AUTOFILL 
         # Autofill SAP SF: New Item
         # Title
-        page.get_by_label("Title").fill(meta["Program Title"])
+        # page.get_by_label("Title").fill(meta["Program Title"])
 
-        # Training Provider
-        page.get_by_label("Training Provider").fill(
-            meta.get("Training Organiser", "")
-        )
+        # # Training Provider
+        # page.get_by_label("Training Provider").fill(
+        #     meta.get("Training Organiser", "")
+        # )
 
-        # HRD Fund (Yes / No)
-        page.get_by_label("HRD Fund").click()
+        # # HRD Fund (Yes / No)
+        # page.get_by_label("HRD Fund").click()
 
-        if meta.get("HRDC Certified", "").lower() == "yes":
-            page.get_by_role("option", name="(Yes)").click()
-        else:
-            page.get_by_role("option", name="(No)").click()
+        # if meta.get("HRDC Certified", "").lower() == "yes":
+        #     page.get_by_role("option", name="(Yes)").click()
+        # else:
+        #     page.get_by_role("option", name="(No)").click()
 
 
-        # H. HUMAN REVIEW (NO AUTO-SUBMIT)
-        page.pause()  # Admin reviews & saves/submits manually
+        # # H. HUMAN REVIEW (NO AUTO-SUBMIT)
+        # page.pause()  # Admin reviews & saves/submits manually
 
         browser.close()
 
