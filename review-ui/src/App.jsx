@@ -101,10 +101,17 @@ function ReviewForm({ data }) {
 
   function downloadUiVisionCSV() {
   const headers = ["ProgramTitle", "TrainingProvider", "HRDFund"];
+
+  const hrdcValue =
+    String(data.hrdc_certified).toLowerCase() === "yes" ||
+    String(data.hrdc_certified).toLowerCase() === "true"
+      ? "(Yes)"
+      : "(No)";
+
   const values = [
     `"${title.replace(/"/g, '""')}"`,
     `"${organiser.replace(/"/g, '""')}"`,
-    `"${data.hrdc_certified}"`
+    `"${hrdcValue}"`
   ];
 
   const csvContent = `${headers.join(",")}\n${values.join(",")}`;
