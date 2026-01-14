@@ -9,22 +9,35 @@ SLOW_MO_MS = 300  # slow down actions so you can see what's happening
 # MAIN AGENT 
 def autofill_sapsf(meta: dict):
     with sync_playwright() as p:
+        # browser = p.chromium.launch(
+        #     headless=True,
+        #     args=[
+        #         "--no-sandbox",
+        #         "--disable-dev-shm-usage"
+        #     ] 
+        # )
+
+        # context = browser.new_context(
+        #     storage_state="sap_state.json"  
+        # )
+
         browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-dev-shm-usage"
-            ] 
+            headless=False,
+            channel="msedge",  
+            slow_mo=300
         )
 
-        context = browser.new_context(
-            storage_state="sap_state.json"  
-        )
+        context = browser.new_context()
 
         page = context.new_page()
 
         # A. LOGIN (HUMAN)
-        page.goto(SAP_LOGIN_URL, wait_until="networkidle")
+        # page.goto(SAP_LOGIN_URL, wait_until="networkidle")
+
+        page.goto(SAP_LOGIN_URL)
+
+        # log in manually (SSO/MFA/PDPA)
+        page.pause()  
 
         # B. Home → View My Learning
         page.wait_for_selector("text=View My Learning", timeout=60000)
