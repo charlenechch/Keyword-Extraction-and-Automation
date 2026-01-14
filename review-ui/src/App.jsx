@@ -94,15 +94,27 @@ function ReviewForm({ data }) {
     alert("Draft saved to backend");
   }
 
-  async function handleAutofill() {
-    await callBackend("/autofill");
-    alert("Autofill opened in browser for review");
-  }
-
-  // async function handleApproveBackend() {
-  //   await callBackend("/submit");
-  //   alert("Submitted via backend automation");
+  // async function handleAutofill() {
+  //   await callBackend("/autofill");
+  //   alert("Autofill opened in browser for review");
   // }
+
+  function downloadUiVisionCSV() {
+  const headers = ["ProgramTitle", "TrainingProvider", "HRDFund"];
+  const values = [
+    `"${title.replace(/"/g, '""')}"`,
+    `"${organiser.replace(/"/g, '""')}"`,
+    `"${data.hrdc_certified}"`
+  ];
+
+  const csvContent = `${headers.join(",")}\n${values.join(",")}`;
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "uivision_items.csv";
+  link.click();
+}
 
 
   return (
@@ -195,8 +207,12 @@ function ReviewForm({ data }) {
           Save Draft
         </button>
 
-        <button className="approve" onClick={handleAutofill}>
+        {/* <button className="approve" onClick={handleAutofill}>
           Autofill (Backend)
+        </button> */}
+
+        <button className="approve" onClick={downloadUiVisionCSV}>
+          Download UI Vision CSV
         </button>
 
         {/* <button onClick={handleApproveBackend}>
