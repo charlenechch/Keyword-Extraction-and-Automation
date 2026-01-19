@@ -94,13 +94,8 @@ function ReviewForm({ data }) {
     alert("Draft saved to backend");
   }
 
-  // async function handleAutofill() {
-  //   await callBackend("/autofill");
-  //   alert("Autofill opened in browser for review");
-  // }
-
   function downloadUiVisionCSV() {
-  const headers = ["ProgramTitle", "TrainingProvider", "HRDFund"];
+  const headers = ["ProgramTitle", "TrainingProvider", "Trainer", "HRDFund"];
 
   const hrdcValue =
     String(data.hrdc_certified).toLowerCase() === "yes" ||
@@ -111,6 +106,7 @@ function ReviewForm({ data }) {
   const values = [
     `"${title.replace(/"/g, '""')}"`,
     `"${organiser.replace(/"/g, '""')}"`,
+    `"${trainer.replace(/"/g, '""')}"`,
     `"${hrdcValue}"`
   ];
 
