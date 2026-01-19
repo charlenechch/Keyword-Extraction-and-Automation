@@ -119,7 +119,6 @@ function ReviewForm({ data }) {
   link.click();
 }
 
-
   return (
     <div className="review-card">
       <h2>Human Review</h2>
