@@ -1,4 +1,5 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
+import traceback
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
@@ -35,14 +36,18 @@ def root():
 # Upload PDF
 @app.post("/upload")
 async def upload(file: UploadFile = File(...)):
-    os.makedirs("temp", exist_ok=True)
-    path = f"temp/{file.filename}"
+    try:
+        os.makedirs("temp", exist_ok=True)
+        path = f"temp/{file.filename}"
 
-    with open(path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+        with open(path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
 
-    return process_single_pdf(path)
+        return process_single_pdf(path)
 
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Save Draft
 @app.post("/draft")
