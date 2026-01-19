@@ -210,17 +210,10 @@ function ReviewForm({ data }) {
           Save Draft
         </button>
 
-        {/* <button className="approve" onClick={handleAutofill}>
-          Autofill (Backend)
-        </button> */}
-
         <button className="approve" onClick={downloadUiVisionCSV}>
           Download UI Vision CSV
         </button>
 
-        {/* <button onClick={handleApproveBackend}>
-          Approve & Send (Backend)
-        </button> */}
       </div>
     </div>
   );

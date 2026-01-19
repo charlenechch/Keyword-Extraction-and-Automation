@@ -1,5 +1,6 @@
 # EXTRACT METADATA FROM TRAINING PROGRAM BROCHURES
 import re
+from turtle import title
 
 meta = {
     "Program Title": None,
@@ -190,37 +191,47 @@ def extract_program_title(text):
     return "Not detected", "Low"
 
 # PROGRAM DATE
+# PROGRAM DATE
 def extract_program_date(text):
     normalized = re.sub(r"\s+", " ", text)
     lines = clean_lines(text)
 
-    # INSEAD multi-session dates
-    if "insead" in text.lower():
-        results = []
-        for i, line in enumerate(lines):
-            if "session" in line.lower() and (
-                "malaysia" in line.lower() or "singapore" in line.lower()
-            ):
-                session_name = line.replace(" session:", "").strip().title()
+    # Agenda-style date headers (e.g. Monday, 21ST July 2025)
+    agenda_dates = re.findall(
+        rf"(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday),?\s*"
+        rf"\d{{1,2}}(?:st|nd|rd|th)?\s+(?:{MONTHS})\s+\d{{4}}",
+        normalized,
+        re.I
+    )
 
-                buffer = " ".join(lines[i+1:i+8])
-                buffer = re.sub(r"\s+", " ", buffer)
+    if agenda_dates:
+        # Normalize ordinals: 21ST → 21
+        cleaned = [
+            re.sub(r"(\d{{1,2}})(st|nd|rd|th)", r"\1", d, flags=re.I)
+            for d in agenda_dates
+        ]
 
-                m = re.search(
-                    rf"(\d{{1,2}}(?:st|nd|rd|th)?\s+(?:{MONTHS}))\s*[-–—-]\s*"
-                    rf"(?:st|nd|rd|th)?\s*(\d{{1,2}}\s+(?:{MONTHS}))\s*(\d{{4}})?",
-                    buffer,
-                    re.I
-                )
+        # Deduplicate while preserving order
+        unique = list(dict.fromkeys(cleaned))
 
-                if m:
-                    year = m.group(3) if m.group(3) else ""
-                    results.append(
-                        f"{session_name}: {m.group(1)} – {m.group(2)} {year}".strip()
-                    )
+        if len(unique) == 1:
+            return unique[0], "High"
 
-        if results:
-            return "; ".join(results), "High"
+        days = [
+            re.search(r"(\d{1,2})", d).group(1)
+            for d in unique
+        ]
+
+        m_my = re.search(
+            rf"(?:{MONTHS})\s+\d{{4}}",
+            unique[0],
+            re.I
+        )
+        if not m_my:
+            return unique[0], "High"
+
+        month_year = m_my.group(0)
+        return f"{days[0]}–{days[-1]} {month_year}", "High"
 
     # Full date range with year
     m = re.search(

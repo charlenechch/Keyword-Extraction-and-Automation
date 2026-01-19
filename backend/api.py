@@ -84,16 +84,4 @@ def autofill_form(payload: MetaPayload):
     return {"status": "autofill_started"}
 
 
-# Approve & Submit (optional later)
-# @app.post("/submit")
-# def submit_form(payload: MetaPayload):
-#     subprocess.Popen(
-#         [
-#             "python",
-#             "autofill_sapsf.py",
-#             json.dumps(payload.meta)
-#         ],
-#         cwd=os.path.dirname(__file__)
-#     )
-#
-#     return {"status": "submitted"}
+
