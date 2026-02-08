@@ -8,7 +8,7 @@ pdfplumber
 pillow
 imagehash
 pytesseract
-
+python-docx
 google-generativeai
 
 playwright
