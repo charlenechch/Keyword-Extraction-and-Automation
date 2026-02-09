@@ -1,6 +1,5 @@
 # EXTRACT METADATA FROM TRAINING PROGRAM BROCHURES
 import re
-from turtle import title
 
 meta = {
     "Program Title": None,
