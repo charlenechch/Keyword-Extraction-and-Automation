@@ -19,7 +19,9 @@ def build_weighted_brochure_text(meta: Dict, brochure_text: str = "") -> str:
     # Boost the "Signal" naturally by repeating the text
     # This ensures the search engine values the Title 3x more than random body text
     if title:
-        parts.append(f"TITLE: {title} {title} {title}")
+        # CHANGE: Increased boost from 3x to 10x
+        boosted_title = " ".join([title] * 10)
+        parts.append(f"TITLE: {boosted_title}")
     
     if agenda:
         # The Agenda often contains the 'Functional' keywords like "Pricing" or "Dispute"

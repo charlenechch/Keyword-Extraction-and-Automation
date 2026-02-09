@@ -18,8 +18,8 @@ STOP = {
 
 def tokenize(text: str) -> List[str]:
     toks = _TOKEN_RE.findall((text or "").lower())
-    return [t for t in toks if t not in STOP and len(t) > 2]
-
+    # CHANGE: Changed len(t) > 2 to len(t) >= 2 to allow "AI"
+    return [t for t in toks if t not in STOP and len(t) >= 2]
 
 def cosine(a: np.ndarray, b: np.ndarray) -> float:
     denom = (np.linalg.norm(a) * np.linalg.norm(b)) + 1e-9
