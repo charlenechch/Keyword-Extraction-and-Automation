@@ -11,4 +11,6 @@ pytesseract
 python-docx
 google-generativeai
 
-playwright
+numpy
+rank-bm25
+sentence-transformers

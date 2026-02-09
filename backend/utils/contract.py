@@ -61,6 +61,8 @@ def to_contract(meta, source_file, pdf_path=None, method=None):
         "hrdc_certified": (
             "Yes" if pdf_path and detect_hrdc_logo(pdf_path) else "No"
         ),
+        "category": meta.get("LMS Category"),
+        "confidence_category": meta.get("LMS Category Confidence"),
         "method": method,
         "review_flags": review_flags(meta),
         "status": decide_status(meta)
