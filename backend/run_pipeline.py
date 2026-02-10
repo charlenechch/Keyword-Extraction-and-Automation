@@ -96,16 +96,16 @@ def process_single_pdf(pdf_path: str) -> dict:
         else:
             print("[Layer 3] Skipped (confidence already high)")
 
-        # # CATEGORY CLASSIFICATION 
-        # final_cat, cat_conf = classify_brochure_category(
-        #     meta=meta,
-        #     brochure_text=text,
-        #     docx_path="assets/LMS Categories final.docx",
-        #     top_k=5,
-        #     use_gemini=True
-        # )
-        # meta["LMS Category"] = final_cat
-        # meta["LMS Category Confidence"] = cat_conf
+        # CATEGORY CLASSIFICATION 
+        final_cat, cat_conf = classify_brochure_category(
+            meta=meta,
+            brochure_text=text,
+            docx_path="assets/LMS Categories final.docx",
+            top_k=5,
+            use_gemini=True
+        )
+        meta["LMS Category"] = final_cat
+        meta["LMS Category Confidence"] = cat_conf
 
         # STANDARDISATION 
         payload = to_contract(
