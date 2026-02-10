@@ -99,7 +99,7 @@ function ReviewForm({ data }) {
   }
 
   function downloadUiVisionCSV() {
-  const headers = ["ProgramTitle", "TrainingProvider", "Trainer", "HRDFund"];
+  const headers = ["ProgramTitle", "TrainingProvider", "HRDFund"];
 
   const hrdcValue =
     String(data.hrdc_certified).toLowerCase() === "yes" ||
@@ -110,7 +110,6 @@ function ReviewForm({ data }) {
   const values = [
     `"${title.replace(/"/g, '""')}"`,
     `"${organiser.replace(/"/g, '""')}"`,
-    `"${trainer.replace(/"/g, '""')}"`,
     `"${hrdcValue}"`
   ];
 
