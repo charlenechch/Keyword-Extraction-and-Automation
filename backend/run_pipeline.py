@@ -10,7 +10,7 @@ from layer1_text.metadata_extraction import extract_metadata
 from layer1_text.hrdc_detection import detect_hrdc_logo
 from layer2_layout.layout_inference import layout_fallback
 from layer3_llm.gemini_fallback import gemini_fallback
-from category_classification import classify_brochure_category
+# from category_classification import classify_brochure_category
 from utils.contract import to_contract
 
 # CONFIG (Batch mode only)
@@ -21,9 +21,6 @@ OUTPUT_EXCEL = "brochure_metadata.xlsx"
 def is_high(conf):
     return conf == "High"
 
-def is_ambiguous(scores, threshold=0.03):
-    top2 = scores.topk(2).values
-    return abs(top2[0] - top2[1]) < threshold
 
 # SINGLE PDF PROCESSOR (API MODE)
 def process_single_pdf(pdf_path: str) -> dict:
@@ -97,15 +94,15 @@ def process_single_pdf(pdf_path: str) -> dict:
             print("[Layer 3] Skipped (confidence already high)")
 
         # CATEGORY CLASSIFICATION 
-        final_cat, cat_conf = classify_brochure_category(
-            meta=meta,
-            brochure_text=text,
-            docx_path="assets/LMS Categories final.docx",
-            top_k=5,
-            use_gemini=True
-        )
-        meta["LMS Category"] = final_cat
-        meta["LMS Category Confidence"] = cat_conf
+        # final_cat, cat_conf = classify_brochure_category(
+        #     meta=meta,
+        #     brochure_text=text,
+        #     docx_path="assets/LMS Categories final.docx",
+        #     top_k=5,
+        #     use_gemini=True
+        # )
+        # meta["LMS Category"] = final_cat
+        # meta["LMS Category Confidence"] = cat_conf
 
         # STANDARDISATION 
         payload = to_contract(
