@@ -41,8 +41,6 @@ function ReviewForm({ data }) {
   const [trainer, setTrainer] = useState(data.trainer);
   const [costAmount, setCostAmount] = useState(data.cost_amount);
   const [costCurrency, setCostCurrency] = useState(data.cost_currency);
-  // const [category, setCategory] = useState(data.category);
-  // const [categoryConfidence] = useState(data.category_confidence);
 
   // Backend API Call Helper
   async function callBackend(endpoint) {
@@ -56,8 +54,6 @@ function ReviewForm({ data }) {
         trainer,
         cost_amount: costAmount,
         cost_currency: costCurrency,
-        // category,
-        // category_confidence: categoryConfidence,
         hrdc_certified: data.hrdc_certified,
         method: data.method,
         status: data.status,
@@ -187,13 +183,6 @@ function ReviewForm({ data }) {
         />
       </div>
 
-      {/* <label>Category</label>
-      <textarea
-        className="long-input"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      /> */}
-
       <h4>Confidence (AI)</h4>
       <ul className="confidence">
         <li>Title: {data.confidence_program_title}</li>
@@ -202,7 +191,6 @@ function ReviewForm({ data }) {
         <li>Cost: {data.confidence_cost}</li>
         <li>Trainer: {data.confidence_trainer}</li>
         <li>Organiser: {data.confidence_organiser}</li>
-        {/* <li>Category: {categoryConfidence}</li> */}
       </ul>
 
       <p><b>HRDC Certified:</b> {data.hrdc_certified}</p>
