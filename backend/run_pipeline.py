@@ -98,7 +98,7 @@ def process_single_pdf(pdf_path: str) -> dict:
             brochure_text=text,
             docx_path="assets/LMS Categories final.docx",
             top_k=5,
-            use_gemini=True
+            use_gemini=False
         )
         meta["LMS Category"] = final_cat
         meta["LMS Category Confidence"] = cat_conf
