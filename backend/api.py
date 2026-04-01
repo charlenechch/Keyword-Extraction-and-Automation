@@ -18,7 +18,7 @@ class MetaPayload(BaseModel):
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://keyword-extraction-and-automation.vercel.app",  "https://keyword-extraction-and-automation-production.up.railway.app"],
+    allow_origins=["http://localhost:5173", "https://keyword-extraction-and-automation.vercel.app",  "https://keyword-extraction-and-automation-production-d337.up.railway.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
